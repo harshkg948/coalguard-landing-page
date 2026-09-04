@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoalGuard AI | Smart Mine Governance Command</title>
+    <style>
+        :root {
+            --bg: #050805;
+            --panel: #0b130e;
+            --green: #00c878;
+            --green-glow: rgba(0, 200, 120, 0.25);
+            --text: #eef8f2;
+            --muted: #899a90;
+            --border: rgba(124, 255, 182, 0.12);
+            --border-hover: rgba(0, 200, 120, 0.4);
+            --danger: #ff5964;
+            --blue: #5ea7ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at 75% 0%, rgba(0, 200, 120, 0.08), transparent 30%), var(--bg);
+            color: var(--text);
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .container {
+            width: min(1100px, 90%);
+            margin: auto;
+        }
+
+        nav {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+            font-size: 18px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: var(--green);
+        }
+
+        .hero {
+            padding: 60px 0 100px 0;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: rgba(0, 200, 120, 0.05);
+            color: #8fe8b9;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: var(--green);
+        }
+
+        p.subtitle {
+            max-width: 650px;
+            margin: 0 auto 50px auto;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        .selector-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media(max-width: 768px) {
+            .selector-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .portal-card {
+            background: linear-gradient(145deg, rgba(14, 24, 18, 0.8), rgba(7, 13, 9, 0.9));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: left;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .portal-card:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 200, 120, 0.1);
+        }
+
+        .portal-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--green);
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+
+        .portal-card:hover::before {
+            opacity: 1;
+        }
+
+        .portal-tag {
+            font-size: 10px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--muted);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .portal-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .portal-card p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .portal-btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-manual {
+            background: var(--green);
+            color: #031008;
+        }
+
+        .btn-manual:hover {
+            background: #00e085;
+            box-shadow: 0 0 20px var(--green-glow);
+        }
+
+        .btn-auto {
+            background: #132219;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-auto:hover {
+            background: #192e22;
+            border-color: var(--border-hover);
+        }
+
+        footer {
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 11px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00c878" stroke-width="2.5">
+                    <path d="M4 18 9 6l5 12 6-12" />
+                    <path d="M3 20h18" />
+                </svg>
+                COALGUARD <span>AI</span>
+            </div>
+            <div style="font-size: 11px; font-family: monospace; color: var(--muted);">
+                SIH COMMAND PORTAL
+            </div>
+        </nav>
+
+        <section class="hero">
+            <div class="badge">
+                <span class="status-dot"></span> Smart Mine Governance & Safety System
+            </div>
+            <h1>Choose Your <br><span>Command Environment</span></h1>
+            <p class="subtitle">
+                Select between the manual input workspace prototype or the fully automated backend system command center for real-time risk assessment.
+            </p>
+
+            <div class="selector-grid">
+                <!-- Manual Input Portal -->
+                <div class="portal-card">
+                    <div>
+                        <span class="portal-tag">// PROTOTYPE MODULE</span>
+                        <h3>Manual Input Dashboard</h3>
+                        <p>Access the interactive frontend environment featuring scenario controls, risk matrices, and spatial simulation inputs.</p>
+                    </div>
+                    <button class="portal-btn btn-manual" onclick="window.open('https://frontend-xi-rose-48.vercel.app/', '_blank')">
+                        Launch Manual Interface →
+                    </button>
+                </div>
+
+                <!-- Automated System Portal -->
+                <div class="portal-card">
+                    <div>
+                        <span class="portal-tag">// CORE ENGINE</span>
+                        <h3>Automated System MVP</h3>
+                        <p>Access the core backend intelligence pipeline and automated operational command dashboard hosted on Render.</p>
+                    </div>
+                    <button class="portal-btn btn-auto" onclick="window.open('https://coalguard-ai-mvp.onrender.com', '_blank')">
+                        Launch Automated MVP →
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            © 2026 COALGUARD AI · Enterprise Safety Command Center
+        </div>
+    </footer>
+
+</body>
+
+</html>
